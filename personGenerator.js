@@ -51,11 +51,88 @@ const personGenerator = {
             "id_10": "Ирина"
         }
     }`,
+    patronymicJson: `{
+        "count": 10,
+        "list": {     
+            "id_1": "Александров",
+            "id_2": "Максимов",
+            "id_3": "Иванов",
+            "id_4": "Артемов",
+            "id_5": "Дмитриев",
+            "id_6": "Абдуразаков",
+            "id_7": "Михайлов",
+            "id_8": "Леонидов",
+            "id_9": "Егоров",
+            "id_10": "Андреев"
+        }
+    }`,
+    professionJson: `{
+        "count": 10,
+        "list": {     
+            "id_1": "слесарь",
+            "id_2": "солдат",
+            "id_3": "шахтер",
+            "id_4": "охранник",
+            "id_5": "лесник",
+            "id_6": "учительница",
+            "id_7": "стилистка",
+            "id_8": "журналистка",
+            "id_9": "домохозяйка",
+            "id_10": "медсестра"        
+        }
+    }`,
+
+    monthJson: `{
+        "count": 12,
+        "list": {     
+            "id_1": "января",
+            "id_2": "февраля",
+            "id_3": "марта",
+            "id_4": "апреля",
+            "id_5": "мая",
+            "id_6": "июня",
+            "id_7": "июля",
+            "id_8": "августа",
+            "id_9": "сентября",
+            "id_10": "октября",
+            "id_11": "ноября",
+            "id_12": "декабря"        
+        }
+    }`,
 
     GENDER_MALE: 'Мужчина',
     GENDER_FEMALE: 'Женщина',
 
     randomIntNumber: (max = 2023, min = 1900) => Math.floor(Math.random() * (max - min + 1) + min),
+
+    randomBirthDay: function () {
+        let maxDay, minDay = 1;
+        switch (this.randomBirthMonth()) {
+            case "февраля":
+                maxDay = 28;
+                break;
+            case "апреля":
+                maxDay = 30;
+                break;
+            case "июня":
+                maxDay = 30;
+                break;
+            case "сентября":
+                maxDay = 30;
+                break;
+            case "ноября":
+                maxDay = 30;
+                break;
+            default:
+                maxDay = 31;
+        }
+        return Math.floor(Math.random() * (maxDay - minDay + 1) + minDay)
+    },
+
+
+    randomBirthMonth: function() {
+            return this.randomValue(this.monthJson);
+    },
 
     randomValue: function (json) {
         const obj = JSON.parse(json);
@@ -78,9 +155,26 @@ const personGenerator = {
             return (this.randomValue(this.surnameJson) + JSON.parse(JSON.stringify('a')));
     },
 
+    randomPatronymic: function() {
+        if (this.person.gender === 'Мужчина') {
+            return (this.randomValue(this.patronymicJson) + JSON.parse(JSON.stringify('ич')));
+        }
+            return (this.randomValue(this.patronymicJson) + JSON.parse(JSON.stringify('нa')));
+    },
+
     randomGender: function() {
        const numberOfGender = Math.round( Math.random());
        return (numberOfGender) ? this.GENDER_MALE : this.GENDER_FEMALE
+    },
+
+    randomProfession: function () {
+        const profList = JSON.parse(this.professionJson);
+        if (this.person.gender === 'Мужчина') {
+                const prop = `id_${Math.floor(Math.random()*profList.count/2 + 1)}`;
+                return profList.list[prop];
+        }
+            const prop = `id_${Math.floor(Math.random()*(profList.count-profList.count/2)+profList.count/2+1)}`;
+            return profList.list[prop];
     },
 
     getPerson: function () {
@@ -88,7 +182,15 @@ const personGenerator = {
         this.person.gender = this.randomGender();
         this.person.firstName = this.randomFirstName(this.person.gender);
         this.person.surname = this.randomSurname(this.person.gender);
+        this.person.birthDay = this.randomBirthDay();
+        this.person.birthMonth = this.randomBirthMonth();
         this.person.birthYear = this.randomIntNumber();
         return this.person;
+    },
+
+    getPatronymic: function () {
+        this.patronymic = {};
+        this.patronymic.definition = this.randomPatronymic();
+        return this.patronymic.definition;
     }
 };
