@@ -13,6 +13,7 @@ body {
     margin		: auto;
     height		: 240px;
     width		: 100%;
+
 }
 
 .card-header{
@@ -37,5 +38,14 @@ body {
 
  h6 {
      text-transform: uppercase;
+     color: crimson;
  }
+
+.buttons {
+    text-align: center;
+    margin: 250px;
+    display: block;
+}
+
+
 

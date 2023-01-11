@@ -70,7 +70,7 @@ const personGenerator = {
         "count": 10,
         "list": {     
             "id_1": "слесарь",
-            "id_2": "солдат",
+            "id_2": "военный",
             "id_3": "шахтер",
             "id_4": "охранник",
             "id_5": "лесник",
@@ -103,7 +103,7 @@ const personGenerator = {
     GENDER_MALE: 'Мужчина',
     GENDER_FEMALE: 'Женщина',
 
-    randomIntNumber: (max = 2023, min = 1900) => Math.floor(Math.random() * (max - min + 1) + min),
+    randomIntNumber: (max = 2005, min = 1960) => Math.floor(Math.random() * (max - min + 1) + min),
 
     randomBirthDay: function () {
         let maxDay, minDay = 1;
